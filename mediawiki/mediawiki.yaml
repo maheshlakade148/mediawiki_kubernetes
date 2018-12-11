@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-mediawiki
+  namespace: online-services
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-mediawiki
+  template:
+    metadata:
+      labels:
+        app: deploy-mediawiki
+    spec:
+      containers:
+      - name: deploy-mediawiki
+        image: 113492863870.dkr.ecr.us-west-2.amazonaws.com/poc-mediawiki-1
+        env:
+        - name: DocumentRoot
+          value: "/var/www/mediawiki"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poc-mediawiki
+  namespace: online-services
+
+spec:
+  ports:
+  - port: 3001
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: deploy-mediawiki
+  type: LoadBalancer
+ 
+---

@@ -32,6 +32,7 @@ spec:
     protocol: TCP
   selector:
     app: deploy-mariadb
-  type: LoadBalancer
+  #type: LoadBalancer
+  type: NodePort
  
 ---

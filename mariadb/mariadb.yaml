@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-mariadb
+  namespace: mediawiki
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-mariadb
+  template:
+    metadata:
+      labels:
+        app: deploy-mariadb
+    spec:
+      containers:
+      - name: deploy-mariadb
+        image: maheshlakade148/mariadb:latest 
+        env:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poc-mariadb
+  namespace: mediawiki
+
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+    protocol: TCP
+  selector:
+    app: deploy-mariadb
+  type: LoadBalancer
+ 
+---
